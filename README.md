@@ -10,7 +10,7 @@ This repository contains a serverless backend application that provides CRUD (Cr
 - **API Gateway:** Service for creating, managing, and securing APIs.
 - **Github Actions:** CI/CD workflow for automating builds, tests, and deployments.
 
-## Key Features**
+## Key Features
 
 - Serverless architecture for scalability and cost-efficiency.
 - CRUD functionality for interacting with data.
@@ -55,11 +55,11 @@ This repository contains a serverless backend application that provides CRUD (Cr
 - Interact with the API endpoints using tools like Postman or curl.
 - Refer to the API documentation (if available) for specific endpoint details and usage examples.
 
-## CI/CD Workflow**
+## CI/CD Workflow
 
 - The Github Actions workflow automatically builds, tests, and deploys the application upon pushes to the `main` branch.
 
-## Additional Information**
+## Additional Information
 
 - **Data model:** Specify the model being managed by the CRUD functions.
 - **API endpoints:** List the available API endpoints and their functionalities.
