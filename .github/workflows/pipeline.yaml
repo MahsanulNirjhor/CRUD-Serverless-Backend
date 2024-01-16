@@ -18,18 +18,23 @@ jobs:
           aws-secret-access-key: ${{ secrets.BETA_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Check for existing table
+      - name: Create a new table
         run: |
-          aws cloudformation describe-stacks --stack-name MyDynamoDBStack > /dev/null 2>&1
-          if [[ $? -e 0 ]]; then
-            echo "Table stack does not exist, creating..."
-            aws cloudformation create-stack \
+          aws cloudformation create-stack \
               --stack-name MyDynamoDBStack \
               --template-body file://dynamodb-template.yaml \
               --capabilities CAPABILITY_AUTO_EXPAND
-          else
-            echo "Table stack already exists, skipping creation."
-          fi
+        # run: |
+        #   aws cloudformation describe-stacks --stack-name MyDynamoDBStack > /dev/null 2>&1
+        #   if [[ $? -e 0 ]]; then
+        #     echo "Table stack does not exist, creating..."
+        #     aws cloudformation create-stack \
+        #       --stack-name MyDynamoDBStack \
+        #       --template-body file://dynamodb-template.yaml \
+        #       --capabilities CAPABILITY_AUTO_EXPAND
+        #   else
+        #     echo "Table stack already exists, skipping creation."
+        #   fi
 
   # deploy-dev:
   #   needs: create-table  # Ensure test is successful before deployment
