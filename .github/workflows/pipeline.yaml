@@ -21,12 +21,9 @@ jobs:
       - name: Check for existing table
         run: |
           aws cloudformation describe-stacks --stack-name MyDynamoDBStack > /dev/null 2>&1
-          if [[ $? -e 0 ]]; then
+          if [[ $? -ne 0 ]]; then
             echo "Table stack does not exist, creating..."
-            aws cloudformation create-stack \
-              --stack-name MyDynamoDBStack \
-              --template-body file://dynamodb-template.yaml \
-              --capabilities CAPABILITY_AUTO_EXPAND
+            aws cloudformation create-stack --stack-name MyDynamoDBStack --template-body file://dynamodb-template.yaml --capabilities CAPABILITY_AUTO_EXPAND
           else
             echo "Table stack already exists, skipping creation."
           fi
