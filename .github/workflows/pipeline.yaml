@@ -11,6 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: create-table
+        run: aws cloudformation create-stack --stack-name MyDynamoDBStack --template-body file://dynamodb-template.yaml --capabilities CAPABILITY_AUTO_EXPAND
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.BETA_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.BETA_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
+  Check-for-existing-table:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: check-table
         run: |
           aws cloudformation describe-stacks --stack-name MyDynamoDBStack > /dev/null 2>&1
           if [[ $? -ne 0 ]]; then
@@ -23,6 +35,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.BETA_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.BETA_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
+    
       # - name: Check for existing table
       #   run: |
       #     aws cloudformation describe-stacks --stack-name MyDynamoDBStack > /dev/null 2>&1
@@ -37,7 +50,7 @@ jobs:
       #     AWS_SECRET_ACCESS_KEY: ${{ secrets.BETA_ACCESS_KEY }}
 
   deploy-dev:
-    needs: create-table  # Ensure test is successful before deployment
+    needs: check-table # Ensure test is successful before deployment
     runs-on: ubuntu-latest
 
     steps:
