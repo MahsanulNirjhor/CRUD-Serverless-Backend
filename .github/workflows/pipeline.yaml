@@ -50,7 +50,7 @@ jobs:
       #     AWS_SECRET_ACCESS_KEY: ${{ secrets.BETA_ACCESS_KEY }}
 
   deploy-dev:
-    needs: check-table # Ensure test is successful before deployment
+    needs: Check-for-existing-table # Ensure test is successful before deployment
     runs-on: ubuntu-latest
 
     steps:
