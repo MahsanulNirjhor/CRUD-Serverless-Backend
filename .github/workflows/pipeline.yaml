@@ -11,11 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Create DynamoDB stack
-        run: |
-          aws cloudformation create-stack \
-            --stack-name MyDynamoDBStack \
-            --template-body file://dynamodb-template.yaml \
-            --capabilities CAPABILITY_AUTO_EXPAND
+        run: aws cloudformation create-stack --stack-name MyDynamoDBStack --template-body file://dynamodb-template.yaml --capabilities CAPABILITY_AUTO_EXPAND
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.BETA_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.BETA_ACCESS_KEY }}
