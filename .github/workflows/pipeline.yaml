@@ -21,7 +21,7 @@ jobs:
       - name: Check for existing table
         run: |
           aws cloudformation describe-stacks --stack-name MyDynamoDBStack > /dev/null 2>&1
-          if [[ $? -ne 0 ]]; then
+          if [[ $? -e 204 ]]; then
             echo "Table stack does not exist, creating..."
             aws cloudformation create-stack \
               --stack-name MyDynamoDBStack \
