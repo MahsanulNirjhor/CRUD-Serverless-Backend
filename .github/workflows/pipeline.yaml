@@ -28,7 +28,7 @@ jobs:
             echo "Table stack already exists, skipping creation."
           fi
   deploy-dev:
-    # needs: test  # Ensure test is successful before deployment
+    needs: create-table  # Ensure test is successful before deployment
     runs-on: ubuntu-latest
 
     steps:
