@@ -188,6 +188,14 @@ Resources:
 Outputs:
 
   Api1:
-    Description: This API Gateway endpoint URL for Prod stage for CRUD_Serverless function for making GET request
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/health/"
+    Description: This Api endpoint is used to make GET request to check if the deployment was successful
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/health"
+
+  Api2:
+    Description: This Api endpoint is used to make GET request to get all the data from the DynamoDB table
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/products"
+    
+  Api3:
+    Description: This Api endpoint is used to make GET, POST, PATCH and Delete request to get all the data from the DynamoDB table
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/product"
   
