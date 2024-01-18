@@ -183,3 +183,11 @@ Resources:
           Properties:
             Path: /product
             Method: PATCH
+
+
+Outputs:
+
+  Api1:
+    Description: This API Gateway endpoint URL for Prod stage for CRUD_Serverless function for making GET request
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/health/"
+  
