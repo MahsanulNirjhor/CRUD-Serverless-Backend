@@ -137,6 +137,11 @@ def buildResponse(statusCode, body=None):
             'Access-Control-Allow-Origin': '*'
         }
     }
-    if body is not None:
-        response['body'] = json.dumps(body, cls=CustomEncoder)
+
+    if statusCode == 200:
+        response['body'] = json.dumps({'message': 'Deployment successful'}, cls=CustomEncoder)
+    else:
+        if body is not None:
+            response['body'] = json.dumps(body, cls=CustomEncoder)
+
     return response
