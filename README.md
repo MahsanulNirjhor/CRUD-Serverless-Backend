@@ -1,4 +1,4 @@
- # CRUD Serverless Backend with Python, AWS Lambda, DynamoDB, and API Gateway**
+ # CRUD Serverless Backend with Python, AWS Lambda, DynamoDB, and API Gateway
 
  ## Overview
 
@@ -17,52 +17,63 @@ This repository contains a serverless backend application that provides CRUD (Cr
 - API Gateway for exposing RESTful endpoints.
 - CI/CD pipeline for automated deployments.
 
-## Getting Started
-
-1. **Prerequisites:**
+## Prerequisites:
    - An AWS account with appropriate permissions.
    - AWS CLI installed and configured.
-   - Python 3.x installed.
-   - Virtual environment (recommended).
+   - Python 3.9 installed.
 
-2. **Clone the repository:**
-   ```bash
-   git clone https://github.com/<your-username>/<your-repo-name>.git
+
+## Deployment Using GitHub Actions:
+To deploy the application using GitHub Actions, follow these steps:
+   
+1. **Fork the repository:** Create a copy of this repository in your own GitHub account.
+
+2. **Create secrets:**
+   - In your forked repository's settings, navigate to the "Secrets" section.
+   - Create the following secrets:
+   - **BETA_KEY_ID:** Your AWS access key ID.
+   - **BETA_ACCESS_KEY:** Your AWS secret access key.
+   - **AWS_REGION:** The AWS region where you want to deploy the application (e.g., `us-east-1`).
+
+3. **Clone the repository:**
+   ```
+   git clone https://github.com/<your-username>/CRUD-Serverless-Backend.git.git
    ```
 
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
+   **Before proceeding, ensure you have:**
+
+   - An AWS account with appropriate permissions to create CloudFormation stacks and DynamoDB tables.
+   - The AWS CLI installed and configured on your system.
+   - Open your terminal and run `cd CRUD-Serverless-Backend`
+
+4. **Create the DynamoDB Table:**
    ```
+      aws cloudformation create-stack \
+      --stack-name MyDynamoDBStack \
+      --template-body file://dynamodb-template.yaml \
+      --capabilities CAPABILITY_AUTO_EXPAND
+   ```
+   
+   Wait for 1 minute. This command will initiate the creation of the DynamoDB table based on the specifications defined in the `dynamodb-template.yaml` file.
 
-4. **Configure environment variables:**
-   - Create a `.env` file in the project root and add the following variables:
-     ```
-     REGION=your-aws-region
-     DYNAMODB_TABLE_NAME=your-dynamodb-table-name
-     STAGE_NAME=your-api-gateway-stage-name
-     ```
+5. **Verify Table Creation:**
+   
+   Once the stack creation is complete, you can verify the existence of the DynamoDB table in the AWS Management Console or by using the AWS CLI:
 
-5. **Deploy the application:**
-   - Use the AWS SAM CLI to deploy the application:
-     ```bash
-     sam build
-     sam deploy --guided
-     ```
+   ```
+   aws dynamodb list-tables
+   ```
+6. **Updating the Table (Optional):**
 
-## Usage
+   If you need to modify the table structure in the future, update the `dynamodb-template.yaml` file and re-run the `aws cloudformation create-stack` command with the `--update-stack` flag. This will update the existing stack with the new configuration.
 
-- Interact with the API endpoints using tools like Postman or curl.
-- Refer to the API documentation (if available) for specific endpoint details and usage examples.
+7. **Trigger the workflow:**
 
-## CI/CD Workflow
+   Push a change to the `main` branch of your forked repository. This will automatically trigger the GitHub Actions workflow.
 
-- The Github Actions workflow automatically builds, tests, and deploys the application upon pushes to the `main` branch.
+8. **View deployment details:**
+   
+   Upon successful completion, the workflow will provide output that includes the deployed application's URL and other relevant information.
 
-## Additional Information
 
-- **Data model:** Specify the model being managed by the CRUD functions.
-- **API endpoints:** List the available API endpoints and their functionalities.
-- **Testing:** Describe the testing strategy and any existing test cases.
-- **Contributing:** Provide guidelines for contributing to the project.
 

@@ -5,30 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  create-table:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: create-table
-      # Run the below code Initial time when I want to create a DynamoDB table
-        # run: aws cloudformation create-stack --stack-name MyDynamoDBStack --template-body file://dynamodb-template.yaml --capabilities CAPABILITY_AUTO_EXPAND
-      # When Dynamodb table will be created comment out the upper line and uncomment the below line
-        run: |
-          aws cloudformation describe-stacks --stack-name MyDynamoDBStack > /dev/null 2>&1
-          if [[ $? -ne 0 ]]; then
-            echo "Table stack does not exist, creating..."
-            aws cloudformation create-stack --stack-name MyDynamoDBStack --template-body file://dynamodb-template.yaml --capabilities CAPABILITY_AUTO_EXPAND
-          else
-            echo "Table stack already exists, skipping creation."
-          fi
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.BETA_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.BETA_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-
   deploy-dev:
-    needs: create-table # Ensure test is successful before deployment
     runs-on: ubuntu-latest
 
     steps:

@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-dynamodbTableName = "ProductInventory_version_2"
+dynamodbTableName = "ProductInventory"
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(dynamodbTableName)
 
