@@ -73,7 +73,53 @@ To deploy the application using GitHub Actions, follow these steps:
 
 8. **View deployment details:**
    
-   Upon successful completion, the workflow will provide output that includes the deployed application's URL and other relevant information.
+   Upon successful completion, the workflow will provide output that includes the deployed application's api endpoint URL and other relevant information.
+
+9. **API Gateway endpoint:**
+   
+   Now Navigate to the repository in question and click on the "Actions" tab located near the top of the page.
+   Locate the latest workflow you're and click on it. Click on the `deploy-dov` button and check the `Run sam deploy --no-confirm-changeset` stage, there you will find api endpoints for different paths. Here is the demo:
+
+   **Endpoint** | **Description**
+   ------- | --------
+   **[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/health](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/health)** | To check if deployment was successful.
+   **[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/product](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/product)** | To perform post, patch, get, delete actions.
+   **[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/products](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/products)** | To perform get actions to view all data.
+   
+   ## Verifying Deployment Success
+
+      Once you've deployed your serverless application using the provided instructions, you can verify its success by sending a GET request to the health check endpoint.
+
+      **Endpoint:**
+
+      [https://6wp4jo6t9h.execute-api.us-east-1.amazonaws.com/Prod/health](https://6wp4jo6t9h.execute-api.us-east-1.amazonaws.com/Prod/health)
+
+      **Operation:**
+
+      GET
+
+      **Expected Response:**
+
+      - **Status Code:** 200 OK
+      - **Response Body:** A JSON object containing a success message:
+
+      ```json
+      {
+      "message": "Deployment successful"
+      }
+      ```
+
+      **Testing the Endpoint:**
+
+      You can test the endpoint using tools like Postman or curl. Here's an example using curl:
+
+      ```bash
+      curl https://6wp4jo6t9h.execute-api.us-east-1.amazonaws.com/Prod/health
+      ```
+
+      **Response Interpretation:**
+
+      - A 200 OK status code and the "Deployment successful" message confirm that your application is deployed and running successfully.
 
 
 

@@ -1,4 +1,4 @@
-name: Create DynamoDB Table and Deploy
+name: CRUD Serverless Backend
 
 on:
   push:

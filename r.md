@@ -111,3 +111,35 @@ This repository contains a serverless backend application that provides CRUD (Cr
 - **Testing:** Describe the testing strategy and any existing test cases.
 - **Contributing:** Provide guidelines for contributing to the project.
 
+
+ **## API Gateway Endpoints**
+
+**Access your API endpoints here:**
+
+**Endpoint** | **Description**
+------- | --------
+**[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/health](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/health)** | To check if deployment was successful.
+**[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/product](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/product)** | To perform post, patch, get, delete actions.
+**[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/products](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/products)** | To perform get actions to view all data.
+
+**### Finding Endpoints:**
+
+**To locate these endpoints:**
+
+1. Successfully execute the `Run sam deploy --no-confirm-changeset` command.
+2. The endpoints will be displayed within the output of that command.
+
+**### Usage Examples:**
+
+(Provide examples of how to use each endpoint, including request methods (GET, POST, PUT, DELETE), required headers, and expected responses.)
+
+**### Additional Notes:**
+
+- **Region:** These endpoints are deployed in the **US-East-1 (N. Virginia)** region.
+- **Authentication:** If authentication is required, specify the necessary steps here.
+- **Error Handling:** Describe any common error scenarios and how to handle them.
+
+**### Further Assistance:**
+
+For more detailed information or troubleshooting, please refer to the API documentation or reach out to the support team.
+

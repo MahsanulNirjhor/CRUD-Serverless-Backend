@@ -138,10 +138,7 @@ def buildResponse(statusCode, body=None):
         }
     }
 
-    if statusCode == 200:
-        response['body'] = json.dumps({'message': 'Deployment successful'}, cls=CustomEncoder)
-    else:
-        if body is not None:
-            response['body'] = json.dumps(body, cls=CustomEncoder)
+    if body is not None:
+            response['body'] = json.dumps({'message': 'Deployment successful'}, cls=CustomEncoder)
 
     return response
