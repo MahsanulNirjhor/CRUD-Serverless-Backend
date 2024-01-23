@@ -1,125 +1,107 @@
- # CRUD Serverless Backend with Python, AWS Lambda, DynamoDB, and API Gateway
+## CRUD Serverless Backend with Python, AWS Lambda, DynamoDB, and API Gateway
 
- ## Overview
+This project contains source code and supporting files for a serverless application with CRUD (Create, Read, Update, Delete) functionality that you can deploy with the Github Actions. Built with the power of serverless technologies, it delivers flexibility, scalability, and cost-effectiveness.
 
-This repository contains a serverless backend application that provides CRUD (Create, Read, Update, Delete) functionality for a data model of your choice. It's built using the following technologies:
+It includes the following files and folders.
 
-- **Python:** The programming language used for Lambda functions.
-- **AWS Lambda:** Serverless compute service for running code without provisioning or managing servers.
-- **DynamoDB:** NoSQL database service for storing data.
-- **API Gateway:** Service for creating, managing, and securing APIs.
-- **Github Actions:** CI/CD workflow for automating builds, tests, and deployments.
+### Key Features
 
-## Key Features
+* **Serverless architecture:** Leverages AWS Lambda to run code without managing servers, ensuring seamless scaling and cost optimization.
+* **CRUD operations:** Create, read, update, and delete data in your chosen DynamoDB table through intuitive API endpoints.
+* **RESTful API:** Exposes well-defined API endpoints for easy integration with your front-end applications.
+* **Automated deployments:** CI/CD pipeline powered by GitHub Actions automates deployments for seamless updates and maintenance.
 
-- Serverless architecture for scalability and cost-efficiency.
-- CRUD functionality for interacting with data.
-- API Gateway for exposing RESTful endpoints.
-- CI/CD pipeline for automated deployments.
+### Prerequisites
 
-## Prerequisites:
-   - An AWS account with appropriate permissions.
-   - AWS CLI installed and configured.
-   - Python 3.9 installed.
+* AWS account with appropriate permissions
+* AWS CLI installed and configured
+* Python 3.9 installed
 
+### Deployment with GitHub Actions
 
-## Deployment Using GitHub Actions:
-To deploy the application using GitHub Actions, follow these steps:
-   
-1. **Fork the repository:** Create a copy of this repository in your own GitHub account.
+1. **Fork the repository:** Create a copy of this repository in your GitHub account.
+2. **Create secrets:** Add the following secrets in your repository settings:
+    * BETA_KEY_ID: Your AWS access key ID
+    * BETA_ACCESS_KEY: Your AWS secret access key
+    * AWS_REGION: The AWS region for deployment (e.g., `us-east-1`)
+3. **Clone the repository:** Navigate to your terminal and run: `git clone https://github.com/<your-username>/CRUD-Serverless-Backend.git`
+4. **Prepare for deployment:**
+    * Ensure you have necessary permissions for CloudFormation stacks and DynamoDB tables.
+    * Open your terminal and navigate to the `CRUD-Serverless-Backend` directory.
+5. **Create the DynamoDB Table:** Execute: `aws cloudformation create-stack --stack-name MyDynamoDBStack --template-body file://dynamodb-template.yaml --capabilities CAPABILITY_AUTO_EXPAND`
+    * Wait for a minute for table creation.
+6. **Verify Table Creation:**
+    * Check the AWS Management Console or use: `aws dynamodb list-tables`
+7. **Update the Table (Optional):** Modify `dynamodb-template.yaml` and rerun the previous command with `--update-stack`.
+8. **Trigger the workflow:** Push changes to your forked repository's `main` branch. The workflow will automatically run.
+9. **View deployment details:** Navigate to the workflow in your repository to see deployment logs and API endpoint URLs.
 
-2. **Create secrets:**
-   - In your forked repository's settings, navigate to the "Secrets" section.
-   - Create the following secrets:
-   - **BETA_KEY_ID:** Your AWS access key ID.
-   - **BETA_ACCESS_KEY:** Your AWS secret access key.
-   - **AWS_REGION:** The AWS region where you want to deploy the application (e.g., `us-east-1`).
+### API References
 
-3. **Clone the repository:**
-   ```
-   git clone https://github.com/<your-username>/CRUD-Serverless-Backend.git.git
-   ```
+**Verifying Deployment Success:**
 
-   **Before proceeding, ensure you have:**
+The `health` endpoint confirms successful deployment:
 
-   - An AWS account with appropriate permissions to create CloudFormation stacks and DynamoDB tables.
-   - The AWS CLI installed and configured on your system.
-   - Open your terminal and run `cd CRUD-Serverless-Backend`
+* **Endpoint:** `https://[YOUR_DEPLOYMENT_URL]/Prod/health`
+* **Operation:** GET
+* **Expected Response:**
+    * **Status Code:** 200 OK
+    * **Response Body:** `{"message": "Deployment successful"}`
 
-4. **Create the DynamoDB Table:**
-   ```
-      aws cloudformation create-stack \
-      --stack-name MyDynamoDBStack \
-      --template-body file://dynamodb-template.yaml \
-      --capabilities CAPABILITY_AUTO_EXPAND
-   ```
-   
-   Wait for 1 minute. This command will initiate the creation of the DynamoDB table based on the specifications defined in the `dynamodb-template.yaml` file.
+**Creating a Product:**
 
-5. **Verify Table Creation:**
-   
-   Once the stack creation is complete, you can verify the existence of the DynamoDB table in the AWS Management Console or by using the AWS CLI:
+* **Endpoint:** `https://[YOUR_DEPLOYMENT_URL]/Prod/product`
+* **Operation:** POST
+* **Request Body:** JSON object with product details (e.g., `productId`, `color`, `price`)
+* **Example Response:**
+    * **Status Code:** 200 OK
+    * **Response Body:** `{"Operation": "SAVE", "Message": "SUCCESS", "Item": {...product details...}}`
 
-   ```
-   aws dynamodb list-tables
-   ```
-6. **Updating the Table (Optional):**
+**Retrieving a Product:**
 
-   If you need to modify the table structure in the future, update the `dynamodb-template.yaml` file and re-run the `aws cloudformation create-stack` command with the `--update-stack` flag. This will update the existing stack with the new configuration.
+* **Endpoint:** `https://[YOUR_DEPLOYMENT_URL]/Prod/product`
+* **Operation:** GET
+* **Query Parameter:** `productId` (required)
+* **Example Response:**
+    * **Status Code:** 200 OK
+    * **Response Body:** JSON object with product details for the specified `productId`
 
-7. **Trigger the workflow:**
+**Updating a Product:**
 
-   Push a change to the `main` branch of your forked repository. This will automatically trigger the GitHub Actions workflow.
+* **Endpoint:** `https://[YOUR_DEPLOYMENT_URL]/Prod/product`
+* **Operation:** PATCH
+* **Request Body:** JSON object with `productId`, `updateKey` (attribute to update), and `updateValue`
+* **Example Response:**
+    * **Status Code:** 200 OK
+    * **Response Body:** Details about the updated attribute and its new value
 
-8. **View deployment details:**
-   
-   Upon successful completion, the workflow will provide output that includes the deployed application's api endpoint URL and other relevant information.
+**Deleting a Product:**
 
-9. **API Gateway endpoint:**
-   
-   Now Navigate to the repository in question and click on the "Actions" tab located near the top of the page.
-   Locate the latest workflow you're and click on it. Click on the `deploy-dov` button and check the `Run sam deploy --no-confirm-changeset` stage, there you will find api endpoints for different paths. Here is the demo:
+* **Endpoint:** `https://[YOUR_DEPLOYMENT_URL]/Prod/product`
+* **Operation:** DELETE
+* **Request Body:** JSON object with `productId` (required)
+* **Example Response:**
+    * **Status Code:** 200 OK
+    * **Response Body:** Details about the deleted product
 
-   **Endpoint** | **Description**
-   ------- | --------
-   **[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/health](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/health)** | To check if deployment was successful.
-   **[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/product](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/product)** | To perform post, patch, get, delete actions.
-   **[https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/products](https://xxxxxxxxxxx.execute-api.us-east-1.amazonaws.com/Prod/products)** | To perform get actions to view all data.
-   
-   ## Verifying Deployment Success
+**Retrieving All Products:**
 
-      Once you've deployed your serverless application using the provided instructions, you can verify its success by sending a GET request to the health check endpoint.
+* **Endpoint:** `https://[YOUR_DEPLOYMENT_URL]/Prod/products`
+* **Operation:** GET
+* **Expected Response:**
+    * **Status Code:** 200 OK
+    * **Response Body:** JSON array containing objects with details of all products in the table (e.g., `productId`, `color`, `price`)
 
-      **Endpoint:**
+**Error Handling:**
 
-      [https://6wp4jo6t9h.execute-api.us-east-1.amazonaws.com/Prod/health](https://6wp4jo6t9h.execute-api.us-east-1.amazonaws.com/Prod/health)
+* Each API endpoint returns appropriate status codes and error messages for various scenarios (e.g., invalid requests, missing data, internal errors). Refer to the AWS documentation for specific code meanings.
 
-      **Operation:**
+**Additional Resources:**
 
-      GET
+* AWS Lambda Documentation: [https://docs.aws.amazon.com/lambda/](https://docs.aws.amazon.com/lambda/)
+* DynamoDB Documentation: [https://docs.aws.amazon.com/dynamodb/](https://docs.aws.amazon.com/dynamodb/)
+* API Gateway Documentation: [https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
 
-      **Expected Response:**
+**Contributing:**
 
-      - **Status Code:** 200 OK
-      - **Response Body:** A JSON object containing a success message:
-
-      ```json
-      {
-      "message": "Deployment successful"
-      }
-      ```
-
-      **Testing the Endpoint:**
-
-      You can test the endpoint using tools like Postman or curl. Here's an example using curl:
-
-      ```bash
-      curl https://6wp4jo6t9h.execute-api.us-east-1.amazonaws.com/Prod/health
-      ```
-
-      **Response Interpretation:**
-
-      - A 200 OK status code and the "Deployment successful" message confirm that your application is deployed and running successfully.
-
-
-
+We welcome contributions to improve this project! Feel free to fork the repository, raise issues, and submit pull requests with enhancements or bug fixes.
